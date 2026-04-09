@@ -1472,7 +1472,7 @@ def test_module_not_found_note(selenium_standalone):
 
     from _pyodide._importhook import add_note_to_module_not_found_error
 
-    removed_stdlibs = ["pwd", "turtle", "tkinter"]
+    removed_stdlibs = ["pwd"]
     lockfile_packages = [
         "micropip",
     ]

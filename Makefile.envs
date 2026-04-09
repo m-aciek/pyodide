@@ -78,8 +78,6 @@ export PYZIP_EXCLUDE_FILES=\
 	curses/ \
 	dbm/ \
 	idlelib/ \
-	tkinter/ \
-	turtle.py \
 	turtledemo/ \
 	test/ \
 	_pydecimal.py \
@@ -92,7 +90,8 @@ export PYZIP_EXCLUDE_FILES=\
 export PYZIP_JS_STUBS=\
 	webbrowser.py \
 	ssl.py \
-	_ssl.py
+	_ssl.py \
+	tkinter/
 
 export PYCOMPILE_EXCLUDE_FILES=\
 	RobotRaconteur- \
