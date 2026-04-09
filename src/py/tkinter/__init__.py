@@ -209,18 +209,14 @@ class PhotoImage:
         return self.height_val
 
 
-class _FakeTk:
-    """Fake Tk-like object that satisfies ``cv.tk.mainloop()``."""
-
-    def mainloop(self, n=0):
-        pass
-
-
-class Tk(_StubWidget, _FakeTk):
+class Tk(_StubWidget):
     """Stub for tkinter.Tk root window."""
 
     def __init__(self):
         self.tk = self
+
+    def mainloop(self, n=0):
+        pass
 
     def title(self, s=None):
         pass

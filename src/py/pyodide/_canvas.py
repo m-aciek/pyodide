@@ -217,7 +217,9 @@ class PyodideSVGCanvas:
         el = document.createElementNS(_SVG_NS, "polyline")
 
         # First four positional args are x0,y0,x1,y1
-        coords: list[float] = list(args[:4]) if len(args) >= 4 else list(args) + [0.0] * (4 - len(args))
+        coords: list[float] = list(args[:4])
+        if len(coords) < 4:
+            coords.extend([0.0] * (4 - len(coords)))
         points = f"{coords[0]},{coords[1]} {coords[2]},{coords[3]}"
         el.setAttribute("points", points)
 
@@ -602,10 +604,14 @@ def _resolve_color(color: str) -> tuple[int, int, int] | None:
         ctx.fillStyle = "rgb(1,2,3)"
         ctx.fillStyle = color
         normalized: str = ctx.fillStyle
-        # If the browser rejected the colour it resets to the previous value
-        if normalized == "rgb(1, 2, 3)":
-            # Edge-case: the user literally passed the sentinel
-            if color.replace(" ", "") not in ("rgb(1,2,3)", "#010203"):
+        # Browser normalizes valid colours to "rgb(r, g, b)" or "#rrggbb".
+        # If the colour was invalid it resets fillStyle to the previous value.
+        # The browser always adds spaces after commas in rgb() notation.
+        sentinel_normalized = "rgb(1, 2, 3)"
+        if normalized == sentinel_normalized:
+            # Edge-case: the user literally passed the sentinel colour
+            user_normalized = color.strip().lower().replace(" ", "")
+            if user_normalized not in ("rgb(1,2,3)", "#010203"):
                 return None
         return _parse_rgb(normalized)
     except Exception:
